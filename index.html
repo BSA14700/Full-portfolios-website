@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BSA // The Collection</title>
+    <title>BSA // The Digital Atelier</title>
     
-    <!-- FONTS: Editorial + Technical -->
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
@@ -15,23 +15,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        /* =========================================
-           THE ATELIER PALETTE (Light Mode Luxury)
-           ========================================= */
         :root {
-            --canvas: #e8e6e1;       /* The Gallery Wall */
-            --ink: #0a0a0a;          /* Deep Black Text */
-            --accent: #ff3300;       /* International Orange */
-            --gold: #D4AF37;         
-            --shade: rgba(0, 0, 0, 0.08);
-            
+            --canvas: #e8e6e1;
+            --ink: #0a0a0a;
+            --accent: #ff3300;
             --font-head: 'Cormorant Garamond', serif;
             --font-body: 'Space Mono', monospace;
-            
             --ease-lux: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--canvas);
@@ -41,17 +35,16 @@
             cursor: crosshair;
         }
 
-        /* 1. TEXTURE LAYER */
+        /* TEXTURE */
         .noise {
             position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: 0.06;
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
             mix-blend-mode: multiply;
         }
 
-        /* 2. THREE.JS SCULPTURE */
         #webgl { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
 
-        /* 3. NAVIGATION */
+        /* NAV */
         nav {
             position: fixed; top: 0; width: 100%; padding: 2rem 3rem;
             display: flex; justify-content: space-between; align-items: center;
@@ -60,41 +53,32 @@
         .logo { font-family: var(--font-head); font-size: 1.5rem; font-style: italic; }
         .links a { 
             color: inherit; text-decoration: none; text-transform: uppercase; 
-            font-size: 0.7rem; margin-left: 2rem; position: relative;
+            font-size: 0.75rem; margin-left: 2rem; position: relative;
         }
-        .links a::after {
-            content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
-            background: currentColor; transition: width 0.3s;
-        }
-        .links a:hover::after { width: 100%; }
 
-        /* 4. HERO SECTION */
+        /* HERO */
         header {
-            min-height: 80vh; display: flex; flex-direction: column; 
+            min-height: 85vh; display: flex; flex-direction: column; 
             justify-content: center; padding: 0 5vw;
         }
-        
         .hero-title {
-            font-family: var(--font-head); font-size: clamp(4rem, 12vw, 10rem);
-            line-height: 0.85; letter-spacing: -0.03em;
-            color: var(--ink); margin-bottom: 2rem;
+            font-family: var(--font-head); font-size: clamp(3.5rem, 12vw, 10rem);
+            line-height: 0.9; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 2rem;
         }
-        
         .hero-title span { display: block; overflow: hidden; }
         .hero-title i { display: block; font-style: normal; transform: translateY(100%); }
 
         .hero-meta {
             border-left: 2px solid var(--accent); padding-left: 1.5rem;
-            max-width: 400px; font-size: 0.9rem; color: #555;
-            margin-left: auto; margin-right: 10vw;
+            max-width: 450px; font-size: 0.9rem; color: #444; margin-left: auto; margin-right: 5vw;
         }
 
-        /* 5. THE GALLERY GRID */
-        .gallery { padding: 5rem 5vw 10rem; }
+        /* GRID SYSTEM */
+        .gallery { padding: 5rem 5vw 12rem; }
         
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 6rem 4rem; max-width: 1600px; margin: 0 auto;
+            gap: 8rem 5rem; max-width: 1800px; margin: 0 auto;
         }
 
         .card {
@@ -102,118 +86,75 @@
             position: relative; perspective: 1000px;
         }
 
-        .card:nth-child(even) { margin-top: 8rem; }
+        /* Desktop Staggering */
+        @media (min-width: 901px) {
+            .card:nth-child(even) { margin-top: 10rem; }
+        }
 
-        /* === THE HOVER-SCROLL ENGINE === */
+        /* CARD FRAME */
         .card-frame {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4/3; 
-            background: #e0e0e0;
-            overflow: hidden;
-            border-radius: 4px 24px 4px 24px; /* Organic Shape */
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative; width: 100%; aspect-ratio: 4/3; 
+            background: #dcdcdc; overflow: hidden;
+            border-radius: 4px 24px 4px 24px;
+            border: 1px solid rgba(0,0,0,0.05);
             transition: all 0.6s var(--ease-lux);
             transform-style: preserve-3d;
         }
 
-        /* The Standard Scroll Image */
-        .long-scroll-img {
-            width: 100%;
-            height: auto;
-            display: block;
+        /* SCROLL ENGINE CSS */
+        .long-scroll-img, .dual-img-1, .dual-img-2 {
+            width: 100%; height: auto; display: block;
             transform: translateY(0); 
-            filter: grayscale(100%) contrast(1.1);
-            transition: transform 8s ease-in-out, filter 0.5s ease;
+            filter: grayscale(100%) contrast(1.05);
+            /* Duration is set by JS now for perfect speed */
+            transition-property: transform, filter;
+            transition-timing-function: linear; /* Constant speed = readable */
+            will-change: transform;
         }
 
-        /* === SPECIAL DUAL-LENS FOR LUXE === */
-        .card-frame.dual-lens {
-            display: flex;
-            gap: 2px;
-            background: var(--ink); /* Divider color */
-        }
-        
-        .dual-col {
-            flex: 1;
-            height: 100%;
-            overflow: hidden;
-            position: relative;
-        }
+        /* DUAL LENS */
+        .card-frame.dual-lens { display: flex; gap: 2px; background: var(--ink); }
+        .dual-col { flex: 1; height: 100%; overflow: hidden; position: relative; background: #ccc; }
 
-        .dual-img-1, .dual-img-2 {
-            width: 100%;
-            height: auto;
-            display: block;
-            filter: grayscale(100%) contrast(1.1);
-            transition: filter 0.5s ease;
-        }
-        
-        /* Different speeds for parallax feel */
-        .dual-img-1 { transition: transform 8s ease-in-out, filter 0.5s ease; }
-        .dual-img-2 { transition: transform 10s ease-in-out, filter 0.5s ease; }
-
-        /* HOVER STATES */
-        .card:hover .card-frame {
-            transform: translateY(-10px) rotateX(2deg);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+        /* INTERACTIONS (Hover & Tap) */
+        .card:hover .card-frame, .card.active-tap .card-frame {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
             z-index: 10;
         }
 
-        /* Standard Scroll Trigger */
-        .card:hover .long-scroll-img {
-            transform: translateY(calc(-100% + 400px)); 
+        /* Scroll Triggers */
+        .card:hover .long-scroll-img, .card.active-tap .long-scroll-img,
+        .card:hover .dual-img-1, .card.active-tap .dual-img-1,
+        .card:hover .dual-img-2, .card.active-tap .dual-img-2 {
+            /* Scroll to bottom leaving 20px visible */
+            transform: translateY(calc(-100% + 450px)); 
             filter: grayscale(0%) contrast(1);
         }
 
-        /* Dual Lens Scroll Trigger */
-        .card:hover .dual-img-1 {
-            transform: translateY(calc(-100% + 400px));
-            filter: grayscale(0%) contrast(1);
-        }
-        .card:hover .dual-img-2 {
-            transform: translateY(calc(-100% + 400px));
-            filter: grayscale(0%) contrast(1);
-        }
-
-        /* Card Meta */
         .card-info {
-            padding-top: 1.5rem;
-            display: flex; justify-content: space-between; align-items: flex-start;
+            padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start;
         }
-        
-        .card-num { 
-            font-family: var(--font-head); font-style: italic; color: var(--accent); 
-            font-size: 1.2rem;
-        }
-        
-        .card-title { font-family: var(--font-head); font-size: 2.5rem; line-height: 1; }
-        .card-tags { font-size: 0.7rem; text-transform: uppercase; color: #666; margin-top: 0.5rem; }
+        .card-title { font-family: var(--font-head); font-size: 2rem; margin-bottom: 0.5rem; line-height: 1; }
+        .card-tags { font-size: 0.7rem; text-transform: uppercase; color: #666; }
+        .card-num { font-family: var(--font-head); font-style: italic; color: var(--accent); font-size: 1.2rem; }
 
-        .btn-group {
-            margin-top: 1.5rem; display: flex; gap: 1rem; opacity: 0;
-            transform: translateY(10px); transition: all 0.4s ease;
-        }
-        .card:hover .btn-group { opacity: 1; transform: translateY(0); }
-        
-        .btn-mini {
-            font-size: 0.65rem; text-transform: uppercase; 
-            border: 1px solid var(--ink); padding: 0.4rem 0.8rem;
-            border-radius: 50px; transition: all 0.3s;
-        }
-        .btn-mini:hover { background: var(--ink); color: var(--canvas); }
-
-        /* 6. FOOTER */
-        footer {
-            padding: 4rem 5vw; border-top: 1px solid #ccc;
-            text-align: center; opacity: 0.5; font-size: 0.8rem;
-        }
-
+        /* MOBILE OPTIMIZATION */
         @media (max-width: 900px) {
             .grid { grid-template-columns: 1fr; gap: 4rem; }
-            .card:nth-child(even) { margin-top: 0; }
+            nav { padding: 1.5rem; }
             .hero-title { font-size: 4rem; }
+            .hero-meta { margin-left: 0; margin-top: 2rem; }
+            
+            /* Make images easier to trigger on mobile */
+            .card-frame::after {
+                content: 'TAP TO VIEW';
+                position: absolute; bottom: 20px; right: 20px;
+                background: rgba(0,0,0,0.7); color: #fff;
+                font-size: 0.6rem; padding: 5px 10px;
+                pointer-events: none; opacity: 0; transition: opacity 0.3s;
+            }
+            .card:not(.active-tap) .card-frame::after { opacity: 1; }
         }
     </style>
 </head>
@@ -225,8 +166,7 @@
     <nav>
         <div class="logo">BSA.</div>
         <div class="links">
-            <a href="mailto:your-email@example.com">Contact</a>
-            <a href="https://github.com/BSA14700">GitHub</a>
+            <a href="mailto:your@email.com" style="margin-left: 0;">Contact</a>
         </div>
     </nav>
 
@@ -237,15 +177,16 @@
         </h1>
         <div class="hero-meta">
             A curated archive of high-fidelity digital environments.
-            From fluid dynamics to character architecture.
+            Built with physics, spatial depth, and human-centric design.
         </div>
     </header>
 
     <section class="gallery">
         <div class="grid">
 
-            <!-- PROJECT 1: AURA (NOIR D'OR) -->
-            <a href="https://bsa14700.github.io/Luxury-aura-perfume/" target="_blank" class="card">
+            <!-- 01: AURA -->
+            <div class="card" onclick="this.classList.toggle('active-tap')">
+                <a href="https://bsa14700.github.io/Luxury-aura-perfume/" target="_blank" style="position:absolute; inset:0; z-index:20;" aria-label="Open Project"></a>
                 <div class="card-frame">
                     <img src="assets/aura-full.png" class="long-scroll-img" alt="Aura Website">
                 </div>
@@ -253,41 +194,35 @@
                     <div>
                         <h2 class="card-title">Aura: Noir D'Or</h2>
                         <div class="card-tags">E-Commerce / Physics / Luxury</div>
-                        <div class="btn-group">
-                            <span class="btn-mini">View Case Study</span>
-                            <span class="btn-mini">Live Demo</span>
-                        </div>
                     </div>
                     <span class="card-num">01</span>
                 </div>
-            </a>
+            </div>
 
-            <!-- PROJECT 2: LUXE (DUAL LENS) -->
-            <a href="https://bsa14700.github.io/Perfume-website/" target="_blank" class="card">
-                <!-- SPECIAL CLASS: dual-lens for 2 images -->
+            <!-- 02: LUXE (Dual Lens) -->
+            <div class="card" onclick="this.classList.toggle('active-tap')">
+                <a href="https://bsa14700.github.io/Perfume-website/" target="_blank" style="position:absolute; inset:0; z-index:20;" aria-label="Open Project"></a>
                 <div class="card-frame dual-lens">
                     <div class="dual-col">
-                        <img src="assets/luxe-big1.png" class="dual-img-1" alt="Luxe Part 1">
+                        <!-- Added class for JS calculation -->
+                        <img src="assets/luxe-big1.png" class="dual-img-1 speed-variant-1" alt="Luxe Part 1">
                     </div>
                     <div class="dual-col">
-                        <img src="assets/luxe-big2.png" class="dual-img-2" alt="Luxe Part 2">
+                        <img src="assets/luxe-big2.png" class="dual-img-2 speed-variant-2" alt="Luxe Part 2">
                     </div>
                 </div>
                 <div class="card-info">
                     <div>
                         <h2 class="card-title">Luxe Systems</h2>
                         <div class="card-tags">Data Viz / Kinetic / 360°</div>
-                        <div class="btn-group">
-                            <span class="btn-mini">View Case Study</span>
-                            <span class="btn-mini">Live Demo</span>
-                        </div>
                     </div>
                     <span class="card-num">02</span>
                 </div>
-            </a>
+            </div>
 
-            <!-- PROJECT 3: ALEX (ALCHEMIST) -->
-            <a href="https://bsa14700.github.io/alex-wesite/" target="_blank" class="card">
+            <!-- 03: ALEX -->
+            <div class="card" onclick="this.classList.toggle('active-tap')">
+                <a href="https://bsa14700.github.io/alex-wesite/" target="_blank" style="position:absolute; inset:0; z-index:20;" aria-label="Open Project"></a>
                 <div class="card-frame">
                     <img src="assets/alex-full.png" class="long-scroll-img" alt="Alex Identity">
                 </div>
@@ -295,17 +230,14 @@
                     <div>
                         <h2 class="card-title">Alex Identity</h2>
                         <div class="card-tags">Portfolio / WebGL / Motion</div>
-                        <div class="btn-group">
-                            <span class="btn-mini">View Case Study</span>
-                            <span class="btn-mini">Live Demo</span>
-                        </div>
                     </div>
                     <span class="card-num">03</span>
                 </div>
-            </a>
+            </div>
 
-            <!-- PROJECT 4: LEO (CHARACTER) -->
-            <a href="https://bsa14700.github.io/Character-website/" target="_blank" class="card">
+            <!-- 04: LEO -->
+            <div class="card" onclick="this.classList.toggle('active-tap')">
+                <a href="https://bsa14700.github.io/Character-website/" target="_blank" style="position:absolute; inset:0; z-index:20;" aria-label="Open Project"></a>
                 <div class="card-frame">
                     <img src="assets/leo-full.png" class="long-scroll-img" alt="Leo Character">
                 </div>
@@ -313,14 +245,10 @@
                     <div>
                         <h2 class="card-title">Leo: Character</h2>
                         <div class="card-tags">Assets / Gaming / Grid</div>
-                        <div class="btn-group">
-                            <span class="btn-mini">View Case Study</span>
-                            <span class="btn-mini">Live Demo</span>
-                        </div>
                     </div>
                     <span class="card-num">04</span>
                 </div>
-            </a>
+            </div>
 
         </div>
     </section>
@@ -330,61 +258,64 @@
     </footer>
 
     <script>
-        // 1. GSAP REVEALS
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // Hero Text
-        gsap.to(".hero-title i", {
-            y: 0, duration: 1.5, stagger: 0.1, ease: "power4.out"
+        // --- SMART SPEED ENGINE ---
+        // Calculates scroll speed based on image height for perfect readability
+        window.addEventListener('load', () => {
+            const images = document.querySelectorAll('.long-scroll-img, .dual-img-1, .dual-img-2');
+            
+            // Speed factor: Lower number = Faster. 
+            // 150 pixels per second is a good reading speed.
+            const speedFactor = 100; 
+
+            images.forEach(img => {
+                const height = img.naturalHeight;
+                // Minimum 10 seconds, otherwise calculate based on height
+                let duration = Math.max(10, height / speedFactor);
+                
+                // Add slight randomness for organic feel in dual lens
+                if(img.classList.contains('speed-variant-2')) {
+                    duration += 3; // Make right column slower
+                }
+
+                img.style.transitionDuration = `${duration}s`;
+            });
         });
 
-        // 2. THREE.JS FLUID SCULPTURE
+        // --- GSAP REVEALS ---
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(".hero-title i", { y: 0, duration: 1.5, stagger: 0.1, ease: "power4.out" });
+
+        // --- THREE.JS BACKGROUND ---
         const canvas = document.querySelector('#webgl');
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xe8e6e1); 
+        scene.background = new THREE.Color(0xe8e6e1);
         scene.fog = new THREE.Fog(0xe8e6e1, 10, 50);
-
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 100);
         camera.position.z = 30;
-
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        // Chrome Torus
-        const geometry = new THREE.TorusKnotGeometry(8, 2, 128, 16);
+        // Abstract Sculpture
+        const geometry = new THREE.TorusKnotGeometry(9, 2.5, 128, 16);
         const material = new THREE.MeshPhysicalMaterial({
-            color: 0xffffff,
-            metalness: 1.0,
-            roughness: 0.1,
-            clearcoat: 1.0,
-            clearcoatRoughness: 0.1
+            color: 0xffffff, metalness: 1.0, roughness: 0.15,
+            clearcoat: 1.0, clearcoatRoughness: 0.1
         });
         const mesh = new THREE.Mesh(geometry, material);
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
+        mesh.castShadow = true; mesh.receiveShadow = true;
         scene.add(mesh);
 
         // Lights
-        const ambient = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambient);
-
+        const ambient = new THREE.AmbientLight(0xffffff, 0.8); scene.add(ambient);
         const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-        dirLight.position.set(5, 10, 7);
-        dirLight.castShadow = true;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
-        scene.add(dirLight);
-        
-        const spot = new THREE.SpotLight(0xff3300, 10);
-        spot.position.set(-10, 0, 10);
-        scene.add(spot);
+        dirLight.position.set(5, 10, 7); dirLight.castShadow = true; scene.add(dirLight);
+        const spot = new THREE.SpotLight(0xff3300, 15);
+        spot.position.set(-15, -5, 10); scene.add(spot);
 
-        // Interaction
-        let mouseX = 0;
-        let mouseY = 0;
-        
+        // Animation
+        let mouseX = 0, mouseY = 0;
         document.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX - window.innerWidth/2) * 0.001;
             mouseY = (e.clientY - window.innerHeight/2) * 0.001;
@@ -392,10 +323,8 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            mesh.rotation.x += 0.002;
-            mesh.rotation.y += 0.002;
-            mesh.rotation.x += mouseY * 0.05;
-            mesh.rotation.y += mouseX * 0.05;
+            mesh.rotation.x += 0.002 + (mouseY * 0.05);
+            mesh.rotation.y += 0.002 + (mouseX * 0.05);
             renderer.render(scene, camera);
         }
         animate();
