@@ -16,9 +16,10 @@
 
     <style>
         :root {
-            --canvas: #e8e6e1;
-            --ink: #0a0a0a;
-            --accent: #ff3300;
+            /* CLEAN & HIGH CONTRAST PALETTE */
+            --canvas: #e8e6e1;       /* Concrete White */
+            --ink: #000000;          /* Pure Black */
+            --accent: #ff3300;       /* International Orange */
             --font-head: 'Cormorant Garamond', serif;
             --font-body: 'Space Mono', monospace;
             --ease-lux: cubic-bezier(0.25, 1, 0.5, 1);
@@ -35,32 +36,42 @@
             cursor: crosshair;
         }
 
-        /* TEXTURE */
-        .noise {
-            position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: 0.06;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-            mix-blend-mode: multiply;
+        /* 3D BACKGROUND - SUBTLE WATERMARK */
+        #webgl { 
+            position: fixed; 
+            inset: 0; 
+            z-index: -1; 
+            opacity: 0.15; /* Very subtle to prevent text overlap issues */
+            pointer-events: none;
         }
 
-        #webgl { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
-
-        /* NAV */
+        /* NAVIGATION - CLEAN BLACK */
         nav {
             position: fixed; top: 0; width: 100%; padding: 2rem 3rem;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 100; mix-blend-mode: difference; color: #fff;
+            z-index: 100; color: var(--ink); /* Pure Black */
+            background: rgba(232, 230, 225, 0.85); /* Frost effect for readability */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
-        .logo { font-family: var(--font-head); font-size: 1.5rem; font-style: italic; }
+        .logo { font-family: var(--font-head); font-size: 1.5rem; font-style: italic; font-weight: 700; }
         .links a { 
-            color: inherit; text-decoration: none; text-transform: uppercase; 
-            font-size: 0.75rem; margin-left: 2rem; position: relative;
+            color: var(--ink); text-decoration: none; text-transform: uppercase; 
+            font-size: 0.75rem; margin-left: 2rem; position: relative; font-weight: 700;
         }
+        .links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+            background: var(--accent); transition: width 0.3s;
+        }
+        .links a:hover::after { width: 100%; }
 
-        /* HERO */
+        /* HERO SECTION */
         header {
-            min-height: 85vh; display: flex; flex-direction: column; 
+            min-height: 80vh; display: flex; flex-direction: column; 
             justify-content: center; padding: 0 5vw;
+            position: relative; z-index: 2;
         }
+        
         .hero-title {
             font-family: var(--font-head); font-size: clamp(3.5rem, 12vw, 10rem);
             line-height: 0.9; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 2rem;
@@ -69,12 +80,13 @@
         .hero-title i { display: block; font-style: normal; transform: translateY(100%); }
 
         .hero-meta {
-            border-left: 2px solid var(--accent); padding-left: 1.5rem;
-            max-width: 450px; font-size: 0.9rem; color: #444; margin-left: auto; margin-right: 5vw;
+            border-left: 3px solid var(--accent); padding-left: 1.5rem;
+            max-width: 500px; font-size: 1rem; color: #111; margin-left: auto; margin-right: 5vw;
+            font-weight: 500; line-height: 1.6;
         }
 
         /* GRID SYSTEM */
-        .gallery { padding: 5rem 5vw 12rem; }
+        .gallery { padding: 2rem 5vw 12rem; position: relative; z-index: 5; }
         
         .grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
@@ -86,7 +98,6 @@
             position: relative; perspective: 1000px;
         }
 
-        /* Desktop Staggering */
         @media (min-width: 901px) {
             .card:nth-child(even) { margin-top: 10rem; }
         }
@@ -94,32 +105,33 @@
         /* CARD FRAME */
         .card-frame {
             position: relative; width: 100%; aspect-ratio: 4/3; 
-            background: #dcdcdc; overflow: hidden;
+            background: #e0e0e0; 
+            overflow: hidden;
             border-radius: 4px 24px 4px 24px;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1);
             transition: all 0.6s var(--ease-lux);
             transform-style: preserve-3d;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
-        /* SCROLL ENGINE CSS */
+        /* SCROLL ENGINE - CLEAN */
         .long-scroll-img, .dual-img-1, .dual-img-2 {
             width: 100%; height: auto; display: block;
             transform: translateY(0); 
-            filter: grayscale(100%) contrast(1.05);
-            /* Duration is set by JS now for perfect speed */
-            transition-property: transform, filter;
-            transition-timing-function: linear; /* Constant speed = readable */
+            /* Full Color - No Filters */
+            transition-property: transform;
+            transition-timing-function: linear; 
             will-change: transform;
         }
 
         /* DUAL LENS */
         .card-frame.dual-lens { display: flex; gap: 2px; background: var(--ink); }
-        .dual-col { flex: 1; height: 100%; overflow: hidden; position: relative; background: #ccc; }
+        .dual-col { flex: 1; height: 100%; overflow: hidden; position: relative; background: #e0e0e0; }
 
-        /* INTERACTIONS (Hover & Tap) */
+        /* INTERACTIONS */
         .card:hover .card-frame, .card.active-tap .card-frame {
             transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
             z-index: 10;
         }
 
@@ -127,32 +139,48 @@
         .card:hover .long-scroll-img, .card.active-tap .long-scroll-img,
         .card:hover .dual-img-1, .card.active-tap .dual-img-1,
         .card:hover .dual-img-2, .card.active-tap .dual-img-2 {
-            /* Scroll to bottom leaving 20px visible */
-            transform: translateY(calc(-100% + 450px)); 
-            filter: grayscale(0%) contrast(1);
+            /* Scroll to bottom */
+            transform: translateY(calc(-100% + 400px)); 
         }
 
+        /* META DATA */
         .card-info {
             padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start;
         }
-        .card-title { font-family: var(--font-head); font-size: 2rem; margin-bottom: 0.5rem; line-height: 1; }
-        .card-tags { font-size: 0.7rem; text-transform: uppercase; color: #666; }
-        .card-num { font-family: var(--font-head); font-style: italic; color: var(--accent); font-size: 1.2rem; }
+        .card-title { 
+            font-family: var(--font-head); font-size: 2.2rem; margin-bottom: 0.5rem; line-height: 1;
+            font-weight: 600; color: #000; 
+        }
+        .card-tags { 
+            font-size: 0.75rem; text-transform: uppercase; color: #333; font-weight: 700;
+        }
+        .card-num { 
+            font-family: var(--font-head); font-style: italic; color: var(--accent); font-size: 1.5rem; font-weight: 700; 
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 5vw; border-top: 1px solid rgba(0,0,0,0.1);
+            text-align: center; color: #000; font-weight: 700;
+            font-size: 0.8rem; text-transform: uppercase;
+        }
 
         /* MOBILE OPTIMIZATION */
         @media (max-width: 900px) {
-            .grid { grid-template-columns: 1fr; gap: 4rem; }
+            .grid { grid-template-columns: 1fr; gap: 6rem; }
             nav { padding: 1.5rem; }
-            .hero-title { font-size: 4rem; }
-            .hero-meta { margin-left: 0; margin-top: 2rem; }
+            .hero-title { font-size: 4rem; margin-top: 2rem; }
+            .hero-meta { margin-left: 0; margin-top: 2rem; background: none; }
             
-            /* Make images easier to trigger on mobile */
+            /* Mobile Tap Hint */
             .card-frame::after {
                 content: 'TAP TO VIEW';
                 position: absolute; bottom: 20px; right: 20px;
-                background: rgba(0,0,0,0.7); color: #fff;
-                font-size: 0.6rem; padding: 5px 10px;
+                background: var(--accent); color: #fff;
+                font-family: var(--font-body);
+                font-size: 0.6rem; padding: 8px 16px;
                 pointer-events: none; opacity: 0; transition: opacity 0.3s;
+                border-radius: 50px; font-weight: 700; letter-spacing: 0.1em;
             }
             .card:not(.active-tap) .card-frame::after { opacity: 1; }
         }
@@ -160,7 +188,6 @@
 </head>
 <body>
 
-    <div class="noise"></div>
     <canvas id="webgl"></canvas>
 
     <nav>
@@ -186,6 +213,7 @@
 
             <!-- 01: AURA -->
             <div class="card" onclick="this.classList.toggle('active-tap')">
+                <!-- Replace with your actual live link -->
                 <a href="https://bsa14700.github.io/Luxury-aura-perfume/" target="_blank" style="position:absolute; inset:0; z-index:20;" aria-label="Open Project"></a>
                 <div class="card-frame">
                     <img src="assets/aura-full.png" class="long-scroll-img" alt="Aura Website">
@@ -204,7 +232,6 @@
                 <a href="https://bsa14700.github.io/Perfume-website/" target="_blank" style="position:absolute; inset:0; z-index:20;" aria-label="Open Project"></a>
                 <div class="card-frame dual-lens">
                     <div class="dual-col">
-                        <!-- Added class for JS calculation -->
                         <img src="assets/luxe-big1.png" class="dual-img-1 speed-variant-1" alt="Luxe Part 1">
                     </div>
                     <div class="dual-col">
@@ -258,23 +285,22 @@
     </footer>
 
     <script>
-        // --- SMART SPEED ENGINE ---
-        // Calculates scroll speed based on image height for perfect readability
+        // --- 1.5x FASTER SCROLL ENGINE ---
         window.addEventListener('load', () => {
             const images = document.querySelectorAll('.long-scroll-img, .dual-img-1, .dual-img-2');
             
-            // Speed factor: Lower number = Faster. 
-            // 150 pixels per second is a good reading speed.
-            const speedFactor = 100; 
+            // SPEED FACTOR: 400 (High Speed)
+            // Example: 2000px height / 400 = 5 seconds.
+            const speedFactor = 400; 
 
             images.forEach(img => {
                 const height = img.naturalHeight;
-                // Minimum 10 seconds, otherwise calculate based on height
-                let duration = Math.max(10, height / speedFactor);
+                // Minimum 4 seconds to ensure it doesn't just snap
+                let duration = Math.max(4, height / speedFactor);
                 
-                // Add slight randomness for organic feel in dual lens
+                // Parallax offset for dual lens organic feel
                 if(img.classList.contains('speed-variant-2')) {
-                    duration += 3; // Make right column slower
+                    duration += 1.5; 
                 }
 
                 img.style.transitionDuration = `${duration}s`;
@@ -285,7 +311,7 @@
         gsap.registerPlugin(ScrollTrigger);
         gsap.to(".hero-title i", { y: 0, duration: 1.5, stagger: 0.1, ease: "power4.out" });
 
-        // --- THREE.JS BACKGROUND ---
+        // --- THREE.JS BACKGROUND (Subtle) ---
         const canvas = document.querySelector('#webgl');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0xe8e6e1);
@@ -294,13 +320,11 @@
         camera.position.z = 30;
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-        // Abstract Sculpture
+        
+        // Abstract Sculpture (White on Grey)
         const geometry = new THREE.TorusKnotGeometry(9, 2.5, 128, 16);
         const material = new THREE.MeshPhysicalMaterial({
-            color: 0xffffff, metalness: 1.0, roughness: 0.15,
+            color: 0xffffff, metalness: 0.5, roughness: 0.1,
             clearcoat: 1.0, clearcoatRoughness: 0.1
         });
         const mesh = new THREE.Mesh(geometry, material);
@@ -310,10 +334,8 @@
         // Lights
         const ambient = new THREE.AmbientLight(0xffffff, 0.8); scene.add(ambient);
         const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-        dirLight.position.set(5, 10, 7); dirLight.castShadow = true; scene.add(dirLight);
-        const spot = new THREE.SpotLight(0xff3300, 15);
-        spot.position.set(-15, -5, 10); scene.add(spot);
-
+        dirLight.position.set(5, 10, 7); scene.add(dirLight);
+        
         // Animation
         let mouseX = 0, mouseY = 0;
         document.addEventListener('mousemove', (e) => {
